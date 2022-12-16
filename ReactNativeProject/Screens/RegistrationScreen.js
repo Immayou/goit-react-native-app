@@ -1,4 +1,4 @@
-import React, { useCallback } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   ImageBackground,
   StyleSheet,
@@ -6,17 +6,47 @@ import {
   TextInput,
   View,
   TouchableOpacity,
+  Platform,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
+  Dimensions,
 } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
 SplashScreen.preventAutoHideAsync();
 
+const initialState = {
+  login: "",
+  email: "",
+  password: "",
+};
+
 export default function RegistrationScreen() {
+  const [isKeyBoardShown, setIsKeyBoardShown] = useState(false);
+  const [isLoginInputOnFocus, setIsLoginInputOnFocus] = useState(false);
+  const [isEmailInputOnFocus, setIsEmailInputOnFocus] = useState(false);
+  const [isPasswordInputOnFocus, setIsPasswordInputOnFocus] = useState(false);
+  const [registerData, setRegisterData] = useState(initialState);
+  // const [dimensions, setDimensions] = useState(
+  //   Dimensions.get("window").width - 20 * 2
+  // );
+
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("../fonts/Roboto-Regular.ttf"),
     "Roboto-Medium": require("../fonts/Roboto-Medium.ttf"),
   });
+
+  // useEffect(() => {
+  //   const onChange = () => {
+  //     const width = Dimensions.get("window").width - 20 * 2;
+  //   };
+  //   Dimensions.addEventListener("change", onChange);
+  //   return () => {
+  //     Dimensions.removeEventListener("change", onChange);
+  //   };
+  // }, []);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -27,63 +57,191 @@ export default function RegistrationScreen() {
   if (!fontsLoaded) {
     return null;
   }
+
+  const onKeyBoardHandler = () => {
+    setIsKeyBoardShown(false);
+    Keyboard.dismiss();
+    setRegisterData(initialState);
+  };
+
+  const onLoginInputHandler = () => {
+    setIsKeyBoardShown(true);
+    setIsLoginInputOnFocus(true);
+  };
+
+  const onEmailInputHandler = () => {
+    setIsKeyBoardShown(true);
+    setIsEmailInputOnFocus(true);
+  };
+
+  const onPasswordInputHandler = () => {
+    setIsKeyBoardShown(true);
+    setIsPasswordInputOnFocus(true);
+  };
+
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <ImageBackground
-        source={require("../assets/BCGImage.jpg")}
-        resizeMode="cover"
-        style={styles.image}
-      >
-        <View style={styles.form}>
-          <View style={{ position: "relative", alignItems: "center" }}>
+    <TouchableWithoutFeedback onPress={onKeyBoardHandler}>
+      <View style={styles.container} onLayout={onLayoutRootView}>
+        <ImageBackground
+          source={require("../assets/BCGImage.jpg")}
+          resizeMode="cover"
+          style={styles.image}
+        >
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+          >
             <View
-              style={[
-                styles.userImage,
-                {
-                  transform: [{ translateY: absolutePositionOfUserImageValue }],
-                },
-              ]}
+              style={{
+                ...styles.form,
+                // width: dimensions
+              }}
             >
-              <ImageBackground
-                source={require("../assets/add.png")}
-                resizeMode="cover"
-                style={[
-                  styles.addImage,
-                  {
-                    transform: [
-                      { translateX: absolutePositionOfAddImageValue },
-                    ],
-                  },
-                ]}
-              ></ImageBackground>
+              <View style={{ position: "relative", alignItems: "center" }}>
+                <View
+                  style={[
+                    styles.userImage,
+                    {
+                      transform: [
+                        { translateY: absolutePositionOfUserImageValue },
+                      ],
+                    },
+                  ]}
+                >
+                  <ImageBackground
+                    source={require("../assets/add.png")}
+                    resizeMode="cover"
+                    style={[
+                      styles.addImage,
+                      {
+                        transform: [
+                          { translateX: absolutePositionOfAddImageValue },
+                        ],
+                      },
+                    ]}
+                  ></ImageBackground>
+                </View>
+              </View>
+              <View style={{ marginBottom: 33 }}>
+                <Text style={styles.formTitle}>Регистрация</Text>
+              </View>
+              <View style={{ marginBottom: 16 }}>
+                <TextInput
+                  style={{
+                    ...styles.input,
+                    ...styles.inputText,
+                    borderColor: isLoginInputOnFocus ? "#FF6C00" : "#E8E8E8",
+                    backgroundColor: isLoginInputOnFocus
+                      ? "#ffffff"
+                      : "#F6F6F6",
+                  }}
+                  value={registerData.login}
+                  placeholder="Логин"
+                  placeholderTextColor={"#BDBDBD"}
+                  onBlur={() => {
+                    setIsLoginInputOnFocus(false);
+                  }}
+                  onFocus={onLoginInputHandler}
+                  onChangeText={(value) =>
+                    setRegisterData((prevState) => ({
+                      ...prevState,
+                      login: value,
+                    }))
+                  }
+                ></TextInput>
+              </View>
+              <View style={{ marginBottom: 16 }}>
+                <TextInput
+                  style={{
+                    ...styles.input,
+                    ...styles.inputText,
+                    borderColor: isEmailInputOnFocus ? "#FF6C00" : "#E8E8E8",
+                    backgroundColor: isEmailInputOnFocus
+                      ? "#ffffff"
+                      : "#F6F6F6",
+                  }}
+                  value={registerData.email}
+                  placeholder="Адрес электронной почты"
+                  placeholderTextColor={"#BDBDBD"}
+                  onBlur={() => {
+                    setIsEmailInputOnFocus(false);
+                  }}
+                  onFocus={onEmailInputHandler}
+                  onChangeText={(value) =>
+                    setRegisterData((prevState) => ({
+                      ...prevState,
+                      email: value,
+                    }))
+                  }
+                ></TextInput>
+              </View>
+              <View
+                style={{
+                  position: "relative",
+                  // marginBottom: isKeyBoardShown ? 32 : 43,
+                  justifyContent: "center",
+                }}
+              >
+                <TextInput
+                  secureTextEntry={true}
+                  style={{
+                    ...styles.input,
+                    ...styles.inputText,
+                    borderColor: isPasswordInputOnFocus ? "#FF6C00" : "#E8E8E8",
+                    backgroundColor: isPasswordInputOnFocus
+                      ? "#ffffff"
+                      : "#F6F6F6",
+                  }}
+                  value={registerData.password}
+                  placeholder="Пароль"
+                  placeholderTextColor={"#BDBDBD"}
+                  onBlur={() => {
+                    setIsPasswordInputOnFocus(false);
+                  }}
+                  onFocus={onPasswordInputHandler}
+                  onChangeText={(value) =>
+                    setRegisterData((prevState) => ({
+                      ...prevState,
+                      password: value,
+                    }))
+                  }
+                ></TextInput>
+                <TouchableOpacity
+                  activeOpacity={0.8}
+                  style={{
+                    position: "absolute",
+                    right: absoluteRightPositionOfInputTextValue,
+                  }}
+                >
+                  <Text
+                    style={{
+                      ...styles.inputText,
+                      color: "#1B4371",
+                    }}
+                  >
+                    Показать
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              {/* {!isKeyBoardShown && (
+                <View> */}
+              <TouchableOpacity
+                style={styles.btn}
+                activeOpacity={0.8}
+                onPress={onKeyBoardHandler}
+              >
+                <Text style={styles.btnText}>Зарегистрироваться</Text>
+              </TouchableOpacity>
+
+              <TouchableOpacity activeOpacity={0.8}>
+                <Text style={styles.bottomText}>Уже есть аккаунт? Войти</Text>
+              </TouchableOpacity>
+              {/* </View>
+              )} */}
             </View>
-          </View>
-          <View style={{ marginBottom: 33 }}>
-            <Text style={styles.formTitle}>Регистрация</Text>
-          </View>
-          <View style={{ marginBottom: 16 }}>
-            <TextInput style={styles.input}>
-              <Text style={styles.inputText}>Логин</Text>
-            </TextInput>
-          </View>
-          <View style={{ marginBottom: 16 }}>
-            <TextInput style={styles.input}>
-              <Text style={styles.inputText}>Адрес электронной почты</Text>
-            </TextInput>
-          </View>
-          <View style={{ marginBottom: 43 }}>
-            <TextInput secureTextEntry={true} style={styles.input}>
-              <Text style={styles.inputText}>Пароль</Text>
-            </TextInput>
-            <Text style={styles.inputText}>Показать</Text>
-          </View>
-          <TouchableOpacity style={styles.btn}>
-            <Text style={styles.btnText}>Зарегистрироваться</Text>
-          </TouchableOpacity>
-          <Text style={styles.bottomText}>Уже есть аккаунт? Войти</Text>
-        </View>
-      </ImageBackground>
-    </View>
+          </KeyboardAvoidingView>
+        </ImageBackground>
+      </View>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -98,9 +256,9 @@ const styles = StyleSheet.create({
   },
   form: {
     backgroundColor: "#FFFFFF",
-    justifyContent: "center",
-    paddingBottom: 78,
     paddingTop: 92,
+    paddingBottom: 78,
+    marginBottom: 100,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
   },
@@ -130,12 +288,10 @@ const styles = StyleSheet.create({
     padding: 16,
     height: 50,
     borderWidth: 1,
-    borderColor: "#E8E8E8",
     borderRadius: 8,
-    backgroundColor: "#F6F6F6",
   },
   inputText: {
-    color: "#BDBDBD",
+    color: "#000000",
     fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
@@ -169,5 +325,8 @@ const absolutePositionOfUserImageValue = -(
   styles.form.paddingTop -
   styles.userImage.height / 2
 );
+
+const absoluteRightPositionOfInputTextValue =
+  styles.input.marginHorizontal + styles.input.padding;
 
 const absolutePositionOfAddImageValue = -(styles.addImage.height / 2);
