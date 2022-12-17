@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useState, useEffect } from "react";
 import {
   ImageBackground,
   StyleSheet,
@@ -10,6 +10,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Dimensions,
 } from "react-native";
 import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
@@ -26,11 +27,26 @@ export default function LoginScreen() {
   const [isEmailInputOnFocus, setIsEmailInputOnFocus] = useState(false);
   const [isPasswordInputOnFocus, setIsPasswordInputOnFocus] = useState(false);
   const [loginData, setLoginData] = useState(initialState);
+  const [isPasswordShown, setIsPasswordShown] = useState(true);
+  const [dimensions, setDimensions] = useState({
+    width: Dimensions.get("window").width - 5 * 2,
+  });
 
   const [fontsLoaded] = useFonts({
     "Roboto-Regular": require("../fonts/Roboto-Regular.ttf"),
     "Roboto-Medium": require("../fonts/Roboto-Medium.ttf"),
   });
+
+  useEffect(() => {
+    const onChange = () => {
+      const width = Dimensions.get("window").width - 5 * 2;
+      setDimensions({ width });
+    };
+    const dimensionsHandler = Dimensions.addEventListener("change", onChange);
+    return () => {
+      dimensionsHandler.remove();
+    };
+  }, []);
 
   const onLayoutRootView = useCallback(async () => {
     if (fontsLoaded) {
@@ -45,6 +61,8 @@ export default function LoginScreen() {
   const onKeyBoardHandler = () => {
     setIsKeyBoardShown(false);
     Keyboard.dismiss();
+    setIsPasswordShown(true);
+    console.log(loginData);
     setLoginData(initialState);
   };
 
@@ -58,6 +76,14 @@ export default function LoginScreen() {
     setIsPasswordInputOnFocus(true);
   };
 
+  const onPasswordIsShownHandler = () => {
+    if (loginData.password !== "") {
+      setIsPasswordShown((prevState) => {
+        !prevState;
+      });
+    }
+  };
+
   return (
     <TouchableWithoutFeedback onPress={onKeyBoardHandler}>
       <View style={styles.container} onLayout={onLayoutRootView}>
@@ -69,7 +95,12 @@ export default function LoginScreen() {
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
           >
-            <View style={styles.form}>
+            <View
+              style={{
+                ...styles.form,
+                width: dimensions.width,
+              }}
+            >
               <View style={{ marginBottom: 33 }}>
                 <Text style={styles.formTitle}>Войти</Text>
               </View>
@@ -106,7 +137,7 @@ export default function LoginScreen() {
                 }}
               >
                 <TextInput
-                  secureTextEntry={true}
+                  secureTextEntry={isPasswordShown}
                   style={{
                     ...styles.input,
                     ...styles.inputText,
@@ -131,6 +162,7 @@ export default function LoginScreen() {
                 ></TextInput>
                 <TouchableOpacity
                   activeOpacity={0.8}
+                  onPress={onPasswordIsShownHandler}
                   style={{
                     position: "absolute",
                     right: absoluteRightPositionOfInputTextValue,
@@ -142,26 +174,26 @@ export default function LoginScreen() {
                       color: "#1B4371",
                     }}
                   >
-                    Показать
+                    {isPasswordShown ? "Показать" : "Скрыть"}
                   </Text>
                 </TouchableOpacity>
               </View>
-              {!isKeyBoardShown && (
-                <View>
-                  <TouchableOpacity
-                    style={styles.btn}
-                    activeOpacity={0.8}
-                    onPress={onKeyBoardHandler}
-                  >
-                    <Text style={styles.btnText}>Войти</Text>
-                  </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={0.8}>
-                    <Text style={styles.bottomText}>
-                      Нет аккаунта? Зарегистрироваться
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              )}
+              {/* {!isKeyBoardShown && ( */}
+              <View>
+                <TouchableOpacity
+                  style={styles.btn}
+                  activeOpacity={0.8}
+                  onPress={onKeyBoardHandler}
+                >
+                  <Text style={styles.btnText}>Войти</Text>
+                </TouchableOpacity>
+                <TouchableOpacity activeOpacity={0.8}>
+                  <Text style={styles.bottomText}>
+                    Нет аккаунта? Зарегистрироваться
+                  </Text>
+                </TouchableOpacity>
+              </View>
+              {/* )} */}
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -178,6 +210,7 @@ const styles = StyleSheet.create({
     flex: 1,
     resizeMode: "cover",
     justifyContent: "flex-end",
+    alignItems: "center",
   },
   form: {
     backgroundColor: "#FFFFFF",
