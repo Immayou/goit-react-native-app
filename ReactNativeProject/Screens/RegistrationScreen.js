@@ -177,7 +177,7 @@ export default function RegistrationScreen() {
               <View
                 style={{
                   position: "relative",
-                  // marginBottom: isKeyBoardShown ? 32 : 43,
+                  marginBottom: isKeyBoardShown ? 32 : 43,
                   justifyContent: "center",
                 }}
               >
@@ -252,7 +252,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: "cover",
-    justifyContent: "flex-end",
+    // justifyContent: "flex-end",
   },
   form: {
     backgroundColor: "#FFFFFF",
