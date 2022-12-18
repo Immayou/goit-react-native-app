@@ -93,11 +93,12 @@ export default function LoginScreen() {
           style={styles.image}
         >
           <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            behavior={Platform.OS === "ios" ? "padding" : ""}
           >
             <View
               style={{
                 ...styles.form,
+                paddingBottom: isKeyBoardShown ? 32 : 144,
                 width: dimensions.width,
               }}
             >
@@ -132,7 +133,7 @@ export default function LoginScreen() {
               <View
                 style={{
                   position: "relative",
-                  marginBottom: isKeyBoardShown ? 32 : 43,
+                  marginBottom: isKeyBoardShown ? 0 : 43,
                   justifyContent: "center",
                 }}
               >
@@ -178,22 +179,22 @@ export default function LoginScreen() {
                   </Text>
                 </TouchableOpacity>
               </View>
-              {/* {!isKeyBoardShown && ( */}
-              <View>
-                <TouchableOpacity
-                  style={styles.btn}
-                  activeOpacity={0.8}
-                  onPress={onKeyBoardHandler}
-                >
-                  <Text style={styles.btnText}>Войти</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.8}>
-                  <Text style={styles.bottomText}>
-                    Нет аккаунта? Зарегистрироваться
-                  </Text>
-                </TouchableOpacity>
-              </View>
-              {/* )} */}
+              {!isKeyBoardShown && (
+                <View>
+                  <TouchableOpacity
+                    style={styles.btn}
+                    activeOpacity={0.8}
+                    onPress={onKeyBoardHandler}
+                  >
+                    <Text style={styles.btnText}>Войти</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={0.8}>
+                    <Text style={styles.bottomText}>
+                      Нет аккаунта? Зарегистрироваться
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -215,7 +216,7 @@ const styles = StyleSheet.create({
   form: {
     backgroundColor: "#FFFFFF",
     paddingTop: 32,
-    paddingBottom: 144,
+    // paddingBottom: 144,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
   },

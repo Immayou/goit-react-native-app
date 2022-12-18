@@ -100,11 +100,12 @@ export default function RegistrationScreen() {
           style={styles.image}
         >
           <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            behavior={Platform.OS === "ios" ? "padding" : ""}
           >
             <View
               style={{
                 ...styles.form,
+                paddingBottom: isKeyBoardShown ? 32 : 78,
                 width: dimensions.width,
               }}
             >
@@ -189,7 +190,7 @@ export default function RegistrationScreen() {
               <View
                 style={{
                   position: "relative",
-                  marginBottom: isKeyBoardShown ? 32 : 43,
+                  marginBottom: isKeyBoardShown ? 0 : 43,
                   justifyContent: "center",
                 }}
               >
@@ -235,20 +236,22 @@ export default function RegistrationScreen() {
                   </Text>
                 </TouchableOpacity>
               </View>
-              {/* {!isKeyBoardShown && ( */}
-              <View>
-                <TouchableOpacity
-                  style={styles.btn}
-                  activeOpacity={0.8}
-                  onPress={onKeyBoardHandler}
-                >
-                  <Text style={styles.btnText}>Зарегистрироваться</Text>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.8}>
-                  <Text style={styles.bottomText}>Уже есть аккаунт? Войти</Text>
-                </TouchableOpacity>
-              </View>
-              {/* )} */}
+              {!isKeyBoardShown && (
+                <View>
+                  <TouchableOpacity
+                    style={styles.btn}
+                    activeOpacity={0.8}
+                    onPress={onKeyBoardHandler}
+                  >
+                    <Text style={styles.btnText}>Зарегистрироваться</Text>
+                  </TouchableOpacity>
+                  <TouchableOpacity activeOpacity={0.8}>
+                    <Text style={styles.bottomText}>
+                      Уже есть аккаунт? Войти
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           </KeyboardAvoidingView>
         </ImageBackground>
@@ -270,7 +273,7 @@ const styles = StyleSheet.create({
   form: {
     backgroundColor: "#FFFFFF",
     paddingTop: 92,
-    paddingBottom: 78,
+    // paddingBottom: 78,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
   },
