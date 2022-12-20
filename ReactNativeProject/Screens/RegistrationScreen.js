@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   ImageBackground,
   StyleSheet,
@@ -12,10 +12,6 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
 } from "react-native";
-import { useFonts } from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
-
-SplashScreen.preventAutoHideAsync();
 
 const initialState = {
   login: "",
@@ -23,7 +19,7 @@ const initialState = {
   password: "",
 };
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation }) {
   const [isKeyBoardShown, setIsKeyBoardShown] = useState(false);
   const [isLoginInputOnFocus, setIsLoginInputOnFocus] = useState(false);
   const [isEmailInputOnFocus, setIsEmailInputOnFocus] = useState(false);
@@ -32,11 +28,6 @@ export default function RegistrationScreen() {
   const [isPasswordShown, setIsPasswordShown] = useState(true);
   const [dimensions, setDimensions] = useState({
     width: Dimensions.get("window").width - 5 * 2,
-  });
-
-  const [fontsLoaded] = useFonts({
-    "Roboto-Regular": require("../fonts/Roboto-Regular.ttf"),
-    "Roboto-Medium": require("../fonts/Roboto-Medium.ttf"),
   });
 
   useEffect(() => {
@@ -49,16 +40,6 @@ export default function RegistrationScreen() {
       dimensionsHandler.remove();
     };
   }, []);
-
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
 
   const onKeyBoardHandler = () => {
     setIsKeyBoardShown(false);
@@ -93,7 +74,10 @@ export default function RegistrationScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={onKeyBoardHandler}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
+      <View
+        style={styles.container}
+        // onLayout={onLayoutRootView}
+      >
         <ImageBackground
           source={require("../assets/BCGImage.jpg")}
           resizeMode="cover"
@@ -246,7 +230,12 @@ export default function RegistrationScreen() {
                     <Text style={styles.btnText}>Зарегистрироваться</Text>
                   </TouchableOpacity>
                   <TouchableOpacity activeOpacity={0.8}>
-                    <Text style={styles.bottomText}>
+                    <Text
+                      style={styles.bottomText}
+                      onPress={() => {
+                        navigation.navigate("Login");
+                      }}
+                    >
                       Уже есть аккаунт? Войти
                     </Text>
                   </TouchableOpacity>

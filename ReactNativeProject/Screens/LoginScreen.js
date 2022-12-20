@@ -22,7 +22,7 @@ const initialState = {
   password: "",
 };
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [isKeyBoardShown, setIsKeyBoardShown] = useState(false);
   const [isEmailInputOnFocus, setIsEmailInputOnFocus] = useState(false);
   const [isPasswordInputOnFocus, setIsPasswordInputOnFocus] = useState(false);
@@ -86,7 +86,10 @@ export default function LoginScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={onKeyBoardHandler}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
+      <View
+        style={styles.container}
+        // onLayout={onLayout}
+      >
         <ImageBackground
           source={require("../assets/BCGImage.jpg")}
           resizeMode="cover"
@@ -188,7 +191,12 @@ export default function LoginScreen() {
                   >
                     <Text style={styles.btnText}>Войти</Text>
                   </TouchableOpacity>
-                  <TouchableOpacity activeOpacity={0.8}>
+                  <TouchableOpacity
+                    activeOpacity={0.8}
+                    onPress={() => {
+                      navigation.navigate("Registration");
+                    }}
+                  >
                     <Text style={styles.bottomText}>
                       Нет аккаунта? Зарегистрироваться
                     </Text>
