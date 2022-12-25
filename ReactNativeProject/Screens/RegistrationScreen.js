@@ -23,7 +23,7 @@ const initialState = {
   password: "",
 };
 
-export default function RegistrationScreen() {
+export default function RegistrationScreen({ navigation, ...props }) {
   const [isKeyBoardShown, setIsKeyBoardShown] = useState(false);
   const [isLoginInputOnFocus, setIsLoginInputOnFocus] = useState(false);
   const [isEmailInputOnFocus, setIsEmailInputOnFocus] = useState(false);
@@ -33,12 +33,6 @@ export default function RegistrationScreen() {
   const [dimensions, setDimensions] = useState({
     width: Dimensions.get("window").width - 5 * 2,
   });
-
-  const [fontsLoaded] = useFonts({
-    "Roboto-Regular": require("../fonts/Roboto-Regular.ttf"),
-    "Roboto-Medium": require("../fonts/Roboto-Medium.ttf"),
-  });
-
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width - 5 * 2;
@@ -50,21 +44,10 @@ export default function RegistrationScreen() {
     };
   }, []);
 
-  const onLayoutRootView = useCallback(async () => {
-    if (fontsLoaded) {
-      await SplashScreen.hideAsync();
-    }
-  }, [fontsLoaded]);
-
-  if (!fontsLoaded) {
-    return null;
-  }
-
   const onKeyBoardHandler = () => {
     setIsKeyBoardShown(false);
     Keyboard.dismiss();
     setIsPasswordShown(true);
-    console.log(registerData);
     setRegisterData(initialState);
   };
 
@@ -93,7 +76,10 @@ export default function RegistrationScreen() {
 
   return (
     <TouchableWithoutFeedback onPress={onKeyBoardHandler}>
-      <View style={styles.container} onLayout={onLayoutRootView}>
+      <View
+        style={styles.container}
+        onLayout={props.route.params.onLayoutRootViewc}
+      >
         <ImageBackground
           source={require("../assets/BCGImage.jpg")}
           resizeMode="cover"
@@ -295,7 +281,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 0.01,
     lineHeight: 35,
-    fontFamily: "Roboto-Medium",
+    // fontFamily: "Roboto-Medium",
     fontSize: 30,
   },
   input: {
@@ -307,7 +293,7 @@ const styles = StyleSheet.create({
   },
   inputText: {
     color: "#000000",
-    fontFamily: "Roboto-Regular",
+    // fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
   },
@@ -324,11 +310,11 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 16,
     lineHeight: 19,
-    fontFamily: "Roboto-Regular",
+    // fontFamily: "Roboto-Regular",
   },
   bottomText: {
     color: "#1B4371",
-    fontFamily: "Roboto-Regular",
+    // fontFamily: "Roboto-Regular",
     textAlign: "center",
     fontSize: 16,
     lineHeight: 19,

@@ -28,24 +28,21 @@ export default function App() {
   }
 
   return (
-    <>
-      <RegistrationScreen onLayoutRootView={onLayoutRootView} />
-      {/* <LoginScreen onLayoutRootView={onLayoutRootView} /> */}
-    </>
+    <NavigationContainer>
+      <AuthStack.Navigator>
+        {/* <AuthStack.Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={LoginScreen}
+          initialParams={{ onLayoutRootView: onLayoutRootView }}
+        /> */}
+        <AuthStack.Screen
+          options={{ headerShown: false }}
+          name="Registration"
+          component={RegistrationScreen}
+          initialParams={{ onLayoutRootView: onLayoutRootView }}
+        />
+      </AuthStack.Navigator>
+    </NavigationContainer>
   );
 }
-
-// <NavigationContainer> */}
-//   //   <AuthStack.Navigator>
-//   //     <AuthStack.Screen
-//       options={{ headerShown: false }}
-//       name="Login"
-//       component={LoginScreen}
-//     />
-//     <AuthStack.Screen
-//       options={{ headerShown: false }}
-//       name="Registration"
-//       component={RegistrationScreen}
-//     />
-//   </AuthStack.Navigator>
-// </NavigationContainer>
