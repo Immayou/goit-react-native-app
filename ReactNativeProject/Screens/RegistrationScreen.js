@@ -23,7 +23,7 @@ const initialState = {
   password: "",
 };
 
-export default function RegistrationScreen({ navigation, ...props }) {
+export default function RegistrationScreen({ navigatione }) {
   const [isKeyBoardShown, setIsKeyBoardShown] = useState(false);
   const [isLoginInputOnFocus, setIsLoginInputOnFocus] = useState(false);
   const [isEmailInputOnFocus, setIsEmailInputOnFocus] = useState(false);
@@ -76,10 +76,7 @@ export default function RegistrationScreen({ navigation, ...props }) {
 
   return (
     <TouchableWithoutFeedback onPress={onKeyBoardHandler}>
-      <View
-        style={styles.container}
-        onLayout={props.route.params.onLayoutRootViewc}
-      >
+      <View style={styles.container}>
         <ImageBackground
           source={require("../assets/BCGImage.jpg")}
           resizeMode="cover"
@@ -259,7 +256,6 @@ const styles = StyleSheet.create({
   form: {
     backgroundColor: "#FFFFFF",
     paddingTop: 92,
-    // paddingBottom: 78,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
   },
@@ -281,7 +277,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 0.01,
     lineHeight: 35,
-    // fontFamily: "Roboto-Medium",
+    fontFamily: "Roboto-Medium",
     fontSize: 30,
   },
   input: {
@@ -293,7 +289,7 @@ const styles = StyleSheet.create({
   },
   inputText: {
     color: "#000000",
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
   },
@@ -310,11 +306,11 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 16,
     lineHeight: 19,
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
   },
   bottomText: {
     color: "#1B4371",
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
     textAlign: "center",
     fontSize: 16,
     lineHeight: 19,
