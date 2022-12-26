@@ -4,8 +4,10 @@ import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { NavigationContainer } from "@react-navigation/native";
+import PostsScreen from "./Screens/PostsScreen";
 import LoginScreen from "./Screens/LoginScreen";
 import RegistrationScreen from "./Screens/RegistrationScreen";
+import { View } from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -30,18 +32,21 @@ export default function App() {
   return (
     <NavigationContainer>
       <AuthStack.Navigator>
+        <AuthStack.Screen
+          options={{ headerShown: false }}
+          name="PostsScreen"
+          component={PostsScreen}
+        />
         {/* <AuthStack.Screen
           options={{ headerShown: false }}
           name="Login"
           component={LoginScreen}
-          initialParams={{ onLayoutRootView: onLayoutRootView }}
         /> */}
-        <AuthStack.Screen
+        {/* <AuthStack.Screen
           options={{ headerShown: false }}
           name="Registration"
           component={RegistrationScreen}
-          initialParams={{ onLayoutRootView: onLayoutRootView }}
-        />
+        /> */}
       </AuthStack.Navigator>
     </NavigationContainer>
   );

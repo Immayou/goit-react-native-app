@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ImageBackground,
   StyleSheet,
@@ -12,7 +12,6 @@ import {
   TouchableWithoutFeedback,
   Dimensions,
 } from "react-native";
-import { useFonts } from "expo-font";
 import * as SplashScreen from "expo-splash-screen";
 
 SplashScreen.preventAutoHideAsync();
@@ -22,7 +21,7 @@ const initialState = {
   password: "",
 };
 
-export default function LoginScreen() {
+export default function LoginScreen({ navigation }) {
   const [isKeyBoardShown, setIsKeyBoardShown] = useState(false);
   const [isEmailInputOnFocus, setIsEmailInputOnFocus] = useState(false);
   const [isPasswordInputOnFocus, setIsPasswordInputOnFocus] = useState(false);
@@ -31,7 +30,7 @@ export default function LoginScreen() {
   const [dimensions, setDimensions] = useState({
     width: Dimensions.get("window").width - 5 * 2,
   });
-
+  console.log(navigation);
   useEffect(() => {
     const onChange = () => {
       const width = Dimensions.get("window").width - 5 * 2;
@@ -201,7 +200,7 @@ const styles = StyleSheet.create({
   form: {
     backgroundColor: "#FFFFFF",
     paddingTop: 32,
-    // paddingBottom: 144,
+    paddingBottom: 144,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
   },
@@ -209,7 +208,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     letterSpacing: 0.01,
     lineHeight: 35,
-    // fontFamily: "Roboto-Medium",
+    fontFamily: "Roboto-Medium",
     fontSize: 30,
   },
   input: {
@@ -221,7 +220,7 @@ const styles = StyleSheet.create({
   },
   inputText: {
     color: "#000000",
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
     fontSize: 16,
     lineHeight: 19,
   },
@@ -238,11 +237,11 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     fontSize: 16,
     lineHeight: 19,
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
   },
   bottomText: {
     color: "#1B4371",
-    // fontFamily: "Roboto-Regular",
+    fontFamily: "Roboto-Regular",
     textAlign: "center",
     fontSize: 16,
     lineHeight: 19,
